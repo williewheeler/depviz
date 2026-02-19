@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "depviz"
+version = "0.1.0"
+description = "Real-time dynamic graph visualization"
+authors = ["Willie Wheeler <private>"]
+license = "The MIT License"
+readme = "README.md"
+packages = [{ include = "graph_service", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+grpcio = "^1.78.0"
+grpcio-tools = "^1.78.0"
+protobuf = "^6.33.5"
+opentelemetry-proto = "^1.39.1"
+
+[tool.poetry.scripts]
+depviz-server = "graph_service.server:serve"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
