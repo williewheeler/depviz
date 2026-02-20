@@ -5,7 +5,7 @@ description = "Real-time dynamic graph visualization"
 authors = ["Willie Wheeler <private>"]
 license = "The MIT License"
 readme = "README.md"
-packages = [{ include = "graph_service", from = "src" }]
+packages = [{ include = "depviz_server", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -13,9 +13,11 @@ grpcio = "^1.78.0"
 grpcio-tools = "^1.78.0"
 protobuf = "^6.33.5"
 opentelemetry-proto = "^1.39.1"
+fastapi = "^0.129.0"
+uvicorn = {version = "^0.41.0", extras = ["standard"]}
 
 [tool.poetry.scripts]
-depviz-server = "graph_service.server:serve"
+depviz-server = "depviz_server.main:serve"
 
 [build-system]
 requires = ["poetry-core"]

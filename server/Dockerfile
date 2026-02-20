@@ -14,4 +14,4 @@ RUN poetry install --no-interaction --no-ansi --no-root
 
 COPY src/ /app/src/
 
-CMD ["python", "-m", "graph_service.server"]
+CMD ["python", "-m", "depviz_server.main"]

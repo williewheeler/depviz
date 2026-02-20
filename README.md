@@ -27,7 +27,7 @@ Supports exporting the dependency graph as an image for sharing, documentation, 
 
 ## Roadmap
 
-### Wed night (tonight)
+### [DONE] Wed night (tonight)
 
 Goal: ingestion proof
 
@@ -38,7 +38,7 @@ Goal: ingestion proof
 
 If this works, the hardest integration piece is done.
 
-### Thu
+### [DONE] Thu
 
 Goal: graph aggregation
 
