@@ -45,16 +45,16 @@ class GraphAggregator:
                         edge_key = EdgeKey(parent_svc, s.service_name)
                         print(f"EDGE: {edge_key.parent_service} -> {edge_key.child_service}")
                         bucket_id = s.end_time_ns // self.window_ns
-                        
+
                         stats = self.buckets[bucket_id][edge_key]
                         stats.call_count += 1
                         stats.durations.append(s.duration_ms)
                         if s.is_error:
                             stats.error_count += 1
-                        
+
                         if bucket_id not in self.active_buckets:
                             bisect.insort(self.active_buckets, bucket_id)
-            
+
             self._evict_old_buckets()
 
     def _evict_old_buckets(self):
@@ -90,7 +90,7 @@ class GraphAggregator:
                     for edge_key, stats in self.buckets[b_id].items():
                         nodes.add(edge_key.parent_service)
                         nodes.add(edge_key.child_service)
-                        
+
                         combined = edges_combined[edge_key]
                         combined.call_count += stats.call_count
                         combined.durations.extend(stats.durations)
@@ -120,7 +120,7 @@ class GraphAggregator:
         }
 
 # Global instance for easy access
-global_aggregator = GraphAggregator(window_sec=60, retention_buckets=1800)
+global_aggregator = GraphAggregator(window_sec=10, retention_buckets=1800)
 
 def ingest(spans: List[SpanEvent]):
     global_aggregator.ingest(spans)

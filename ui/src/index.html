@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DepViz - Service Dependency Graph</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #cy {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+      #header {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>DepViz</h1>
+      <button onclick="window.location.reload()">Refresh Graph</button>
+    </div>
+    <div id="cy"></div>
+  </body>
+</html>

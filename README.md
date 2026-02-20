@@ -50,7 +50,7 @@ Goal: graph aggregation
 
 No UI yet.
 
-### Fri
+### [DONE] Fri
 
 Goal: UI skeleton
 
