@@ -272,7 +272,7 @@ async function manualFetch() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // connectWebSocket();
+  connectWebSocket();
   manualFetch();
 
   document.getElementById('refresh-btn')?.addEventListener('click', manualFetch);
@@ -280,9 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('window-selector') as HTMLSelectElement;
   selector.addEventListener('change', () => {
     currentWindowSec = parseInt(selector.value);
-    // if (ws && ws.readyState === WebSocket.OPEN) {
-    //   ws.send(`window:${currentWindowSec}`);
-    // }
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(`window:${currentWindowSec}`);
+    }
     manualFetch();
   });
 });
