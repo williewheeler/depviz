@@ -1,8 +1,8 @@
-![DepViz screenshot](./depviz.png)
-
 # DepViz
 
 Real-time dynamic service dependency graph visualization from OpenTelemetry traces.
+
+![DepViz screenshot](./depviz.png =600x)
 
 DepViz consists of two main components:
 - **Server**: A Python-based OTLP gRPC receiver that processes incoming traces, aggregates service dependencies, and provides a REST/WebSocket API.
