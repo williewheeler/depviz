@@ -1,8 +1,72 @@
-# depviz
+# Depviz
 
 Real-time dynamic service dependency graph visualization from OpenTelemetry traces.
 
-## MVP Feature Set
+Depviz consists of two main components:
+- **Server**: A Python-based OTLP gRPC receiver that processes incoming traces, aggregates service dependencies, and provides a REST/WebSocket API.
+- **UI**: A web interface built with TypeScript and Cytoscape.js that visualizes the service topology in real-time.
+
+### Relationship to OpenTelemetry Demo
+Depviz is designed to work alongside the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo). It consumes traces produced by the demo services to build a live map of the architecture, providing immediate visibility into service relationships, latency, and error rates.
+
+## Deployment to Kubernetes
+
+To deploy Depviz alongside the OpenTelemetry Demo in a Kubernetes cluster (e.g., using `kind` or `minikube`), follow these steps:
+
+### 1. Build and Load Images
+First, build the Docker images for both the server and the UI, then load them into your local cluster.
+
+```bash
+# Build Server
+cd server
+docker build -t depviz-server:dev .
+kind load docker-image depviz-server:dev  # Or 'minikube image load'
+
+# Build UI
+cd ../ui
+docker build -t depviz-ui:dev .
+kind load docker-image depviz-ui:dev      # Or 'minikube image load'
+```
+
+### 2. Deploy Depviz Components
+Apply the Kubernetes manifests for the server and the UI.
+
+```bash
+# From the project root
+kubectl apply -f server/k8s/depviz-server.yaml
+kubectl apply -f ui/k8s/depviz-ui.yaml
+```
+
+### 3. Configure OpenTelemetry Collector
+To feed traces into Depviz, you need to update the OpenTelemetry Collector configuration in your cluster.
+
+1.  Locate the ConfigMap for your OTel Collector agent (e.g., `otel-collector-agent`).
+2.  Add a new OTLP exporter pointing to `depviz-server:4317`.
+3.  Add this exporter to your traces pipeline.
+
+Example configuration snippet:
+```yaml
+exporters:
+  otlp/depviz:
+    endpoint: depviz-server:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      exporters: [otlp/jaeger, otlp/depviz, debug]
+```
+
+### 4. Access the UI
+Port-forward to the UI service to view the dashboard:
+
+```bash
+kubectl port-forward deploy/depviz-ui 8001:8001
+```
+Open your browser and navigate to `http://localhost:8001`.
+
+## Features
 
 ### 1. Automatic topology discovery from OTLP traces
 Infers service-to-service dependencies directly from distributed traces, eliminating the need for manually maintained service maps.
@@ -24,62 +88,6 @@ Consumes OTLP trace data via gRPC directly from the OpenTelemetry Collector, dem
 
 ### 7. Exportable visualization
 Supports exporting the dependency graph as an image for sharing, documentation, or incident reports.
-
-## Roadmap
-
-### [DONE] Wed night (tonight)
-
-Goal: ingestion proof
-
-- Python OTLP gRPC receiver
-- deploy to cluster
-- collector fork
-- see spans printed
-
-If this works, the hardest integration piece is done.
-
-### [DONE] Thu
-
-Goal: graph aggregation
-
-- infer edges from spans
-- windowed aggregation
-- compute call_count + p95 latency
-- in-memory graph
-- basic REST endpoint to fetch graph snapshot
-
-No UI yet.
-
-### [DONE] Fri
-
-Goal: UI skeleton
-
-- simple Cytoscape graph
-- render snapshot
-- color edges/nodes by health
-- no real-time updates yet
-
-### Sat
-
-Goal: streaming UX
-
-- websocket updates
-- incremental graph refresh
-- click node/edge metrics panel
-- basic time window selector
-
-Now it’s already a useful tool.
-
-### Sun
-
-Goal: polish + portfolio readiness
-
-- export graph image
-- README
-- architecture diagram
-- demo video / GIF
-- cleanup rough edges
-- deployment instructions
 
 # See also
 
