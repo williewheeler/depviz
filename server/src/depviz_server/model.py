@@ -1,14 +1,15 @@
-from dataclasses import dataclass
-from typing import Optional
+from dataclasses import dataclass, field
+from typing import Optional, List
 
 @dataclass(frozen=True)
 class SpanEvent:
-    trace_id: bytes
-    span_id: bytes
-    parent_span_id: Optional[bytes]
+    trace_id: str
+    span_id: str
+    parent_span_id: Optional[str]
     service_name: str
     duration_ms: float
     end_time_ns: int
+    kind: int = 0  # Default to SPAN_KIND_UNSPECIFIED
     is_error: bool = False
 
 @dataclass(frozen=True)
@@ -19,9 +20,12 @@ class EdgeKey:
 @dataclass
 class EdgeStats:
     call_count: int = 0
-    durations: list[float] = None
+    durations: List[float] = field(default_factory=list)
     error_count: int = 0
 
-    def __post_init__(self):
-        if self.durations is None:
-            self.durations = []
+@dataclass
+class NodeStats:
+    call_count: int = 0
+    error_count: int = 0
+    server_call_count: int = 0
+    server_error_count: int = 0

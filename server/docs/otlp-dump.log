@@ -1,0 +1,102 @@
+Starting OTLP gRPC receiver on [::]:4317...
+Starting REST API server on 0.0.0.0:8000...
+OTLP gRPC receiver listening on 4317
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+{
+  "resource": {
+    "attributes": [
+      {
+        "key": "service.name",
+        "value": {
+          "stringValue": "frontend-proxy"
+        }
+      },
+      {
+        "key": "telemetry.sdk.language",
+        "value": {
+          "stringValue": "cpp"
+        }
+      },
+      {
+        "key": "telemetry.sdk.name",
+        "value": {
+          "stringValue": "envoy"
+        }
+      },
+      {
+        "key": "telemetry.sdk.version",
+        "value": {
+          "stringValue": "5251fec52ee063192dcd8bd0615c6283e7b12b6c/1.34.12/Clean/RELEASE/BoringSSL"
+        }
+      },
+      {
+        "key": "k8s.pod.name",
+        "value": {
+          "stringValue": "frontend-proxy-697fbd5699-6qfs2"
+        }
+      },
+      {
+        "key": "k8s.namespace.name",
+        "value": {
+          "stringValue": "default"
+        }
+      },
+      {
+        "key": "service.namespace",
+        "value": {
+          "stringValue": "otel-demo"
+        }
+      },
+      {
+        "key": "k8s.pod.uid",
+        "value": {
+          "stringValue": "bbcb0879-94dc-4e99-b104-1c2d43737459"
+        }
+      },
+      {
+        "key": "k8s.replicaset.uid",
+        "value": {
+          "stringValue": "943758c3-1a55-4b4a-9f10-b757489b985d"
+        }
+      },
+      {
+        "key": "k8s.pod.start_time",
+        "value": {
+          "stringValue": "2026-02-19T03:19:07Z"
+        }
+      },
+      {
+        "key": "k8s.replicaset.name",
+        "value": {
+          "stringValue": "frontend-proxy-697fbd5699"
+        }
+      },
+      {
+        "key": "k8s.deployment.name",
+        "value": {
+          "stringValue": "frontend-proxy"
+        }
+      },
+      {
+        "key": "k8s.node.name",
+        "value": {
+          "stringValue": "minikube"
+        }
+      },
+      {
+        "key": "k8s.cluster.uid",
+        "value": {
+          "stringValue": "86c620db-e9c9-4b6d-9505-496e2b882155"
+        }
+      },
+      {
+        "key": "service.version",
+        "value": {
+          "stringValue": "2.2.0"
+        }
+      },
+
+[snip]

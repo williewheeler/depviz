@@ -1,0 +1,92 @@
+RESOURCE: service.name=shipping service.instance.id=default.shipping-78f88699cd-br5n2.shipping k8s.pod.name=shipping-78f88699cd-br5n2
+  [opentelemetry-instrumentation-actix-web] POST quote kind=SPAN_KIND_CLIENT spanId=KeQDLHF1niI= parent=Bqim1zo6p6A=
+  [opentelemetry-instrumentation-actix-web] /get-quote kind=SPAN_KIND_SERVER spanId=Bqim1zo6p6A= parent=Uc6kTzDkZvM=
+  [opentelemetry-instrumentation-actix-web] /ship-order kind=SPAN_KIND_SERVER spanId=YGyiyvTHl1M= parent=Uo12j4oeuOI=
+RESOURCE: service.name=frontend-proxy service.instance.id=default.frontend-proxy-697fbd5699-6qfs2.frontend-proxy k8s.pod.name=frontend-proxy-697fbd5699-6qfs2
+  [envoy] ingress kind=SPAN_KIND_SERVER spanId=3jkaWSx72Cw= parent=WI7DUDNZ9xk=
+  [envoy] router frontend egress kind=SPAN_KIND_CLIENT spanId=HSiRSEwJHn0= parent=utZXZvbWYA4=
+  [envoy] ingress kind=SPAN_KIND_SERVER spanId=utZXZvbWYA4= parent=iuOoT2cWTc0=
+  [envoy] router frontend egress kind=SPAN_KIND_CLIENT spanId=/Z/fhIhlGiE= parent=+8RUO8sih4c=
+  [envoy] ingress kind=SPAN_KIND_SERVER spanId=+8RUO8sih4c= parent=yWSXU7bt/wg=
+RESOURCE: service.name=product-catalog service.instance.id=default.product-catalog-d6db96fb7-trjmj.product-catalog k8s.pod.name=product-catalog-d6db96fb7-trjmj
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=/g3Xb+qmpdU= parent=nbcewK3aFJM=
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=kWRXMC2HJ7Y= parent=WIjpS6xxClI=
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=68cX+tLlnVQ= parent=r4hU+U5h/fw=
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=ZfDR3yiB+lQ= parent=IGiD6HnOOKM=
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=RmoiWJI9q2c= parent=2KzzJCGzn2Q=
+  [github.com/XSAM/otelsql] sql.conn.query kind=SPAN_KIND_CLIENT spanId=3Dkz3dM1YOM= parent=lETN+Vzdi+c=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=nbcewK3aFJM= parent=1kD8Bcwxi4I=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=WIjpS6xxClI= parent=SwYhNpGzpbY=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=r4hU+U5h/fw= parent=F4EiRPd0Ms8=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=IGiD6HnOOKM= parent=7ml20MKBrvQ=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=2KzzJCGzn2Q= parent=hh8kmZaa8h4=
+  [go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc] oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_SERVER spanId=lETN+Vzdi+c= parent=EpsLeDdD4dw=
+DEBUG:    > TEXT '{"nodes":["ad","cart","checkout","currency","fl...9.37,"error_count":0}]}' [1377 bytes]
+RESOURCE: service.name=flagd service.instance.id=39317d1c-ea1d-4127-9fdd-248f968b9e31 k8s.pod.name=flagd-5ff58bc756-qr6pk
+  [jsonEvaluator] resolveBoolean kind=SPAN_KIND_INTERNAL spanId=w+BPYkEMiXc= parent=QssEG/OQW60=
+  [jsonEvaluator] resolveInt kind=SPAN_KIND_INTERNAL spanId=pOsEqyh5d10= parent=KsM2ac1IXRs=
+  [flagd.evaluation.v1] resolveBoolean kind=SPAN_KIND_SERVER spanId=QssEG/OQW60= parent=yffihOHZF+I=
+  [flagd.evaluation.v1] resolveInt kind=SPAN_KIND_SERVER spanId=KsM2ac1IXRs= parent=//y/zHhe1Ow=
+  [connectrpc.com/otelconnect] flagd.evaluation.v1.Service/ResolveBoolean kind=SPAN_KIND_SERVER spanId=yffihOHZF+I= parent=wyLwhBrrjlc=
+  [connectrpc.com/otelconnect] flagd.evaluation.v1.Service/ResolveInt kind=SPAN_KIND_SERVER spanId=//y/zHhe1Ow= parent=None
+RESOURCE: service.name=accounting service.instance.id=ccc51bcc-f716-41cb-b828-c03e94d1f1d3 k8s.pod.name=accounting-5ccf5cf965-dlwd6
+  [OpenTelemetry.AutoInstrumentation.Kafka] orders receive kind=SPAN_KIND_CONSUMER spanId=jHEfKCMo8m4= parent=y/hOK1oiVDE=
+  [Npgsql] postgresql kind=SPAN_KIND_CLIENT spanId=Foely4u8Ips= parent=y/hOK1oiVDE=
+  [Accounting.Consumer] order-consumed kind=SPAN_KIND_INTERNAL spanId=y/hOK1oiVDE= parent=None
+DEBUG:    > TEXT '{"nodes":["ad","cart","checkout","currency","fl...9.37,"error_count":0}]}' [1377 bytes]
+RESOURCE: service.name=frontend service.instance.id=29399194-421b-480f-af29-c22bd82d211c k8s.pod.name=frontend-6bd6cb5df4-5r7m6
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=1kD8Bcwxi4I= parent=D42UbNtoQb0=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=SwYhNpGzpbY= parent=0YEqEQGM1Wk=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.CartService/AddItem kind=SPAN_KIND_CLIENT spanId=rwQOGzdt35Q= parent=8MC2+VJVuVI=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.CartService/GetCart kind=SPAN_KIND_CLIENT spanId=K6mNZ6cTDXc= parent=8MC2+VJVuVI=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=F4EiRPd0Ms8= parent=srRCQocGfBk=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.CartService/AddItem kind=SPAN_KIND_CLIENT spanId=LPPTh0NyrYo= parent=RfoPV6qsbnc=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=7ml20MKBrvQ= parent=0K8iOlbKiQU=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.CartService/GetCart kind=SPAN_KIND_CLIENT spanId=IW+wG/awLio= parent=RfoPV6qsbnc=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductReviewService/AskProductAIAssistant kind=SPAN_KIND_CLIENT spanId=hjViExrsoas= parent=xoUhJklXrZI=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.CheckoutService/PlaceOrder kind=SPAN_KIND_CLIENT spanId=KpDu/RiUQ5w= parent=qHjpXPxWCF4=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=4NIgRSegLpk= parent=qHjpXPxWCF4=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductCatalogService/GetProduct kind=SPAN_KIND_CLIENT spanId=SYgNqovWZbE= parent=qHjpXPxWCF4=
+  [@opentelemetry/instrumentation-grpc] grpc.oteldemo.ProductReviewService/GetProductReviews kind=SPAN_KIND_CLIENT spanId=7Iq5cqhVmug= parent=ZQEqGjDzyA8=
+  [next.js] executing api route (pages) /api/products/[productId]/index kind=SPAN_KIND_INTERNAL spanId=D42UbNtoQb0= parent=M7vxaApE/cw=
+  [next.js] GET /api/products/{productId} kind=SPAN_KIND_SERVER spanId=M7vxaApE/cw= parent=WD0Fwt/wtyQ=
+  [next.js] executing api route (pages) /api/products/[productId]/index kind=SPAN_KIND_INTERNAL spanId=0YEqEQGM1Wk= parent=vbrQDWSmITU=
+  [next.js] GET /api/products/{productId} kind=SPAN_KIND_SERVER spanId=vbrQDWSmITU= parent=+IFbxUOmuO4=
+  [next.js] executing api route (pages) /api/cart kind=SPAN_KIND_INTERNAL spanId=8MC2+VJVuVI= parent=h89YbAv4R88=
+  [next.js] POST /api/cart kind=SPAN_KIND_SERVER spanId=h89YbAv4R88= parent=2jpgAWvFAEA=
+  [next.js] executing api route (pages) /api/products/[productId]/index kind=SPAN_KIND_INTERNAL spanId=srRCQocGfBk= parent=qt1Rsjkauww=
+  [next.js] GET /api/products/{productId} kind=SPAN_KIND_SERVER spanId=qt1Rsjkauww= parent=ZgQ/1RXm8ak=
+  [next.js] executing api route (pages) /api/products/[productId]/index kind=SPAN_KIND_INTERNAL spanId=0K8iOlbKiQU= parent=yUMMOwSJU6M=
+  [next.js] GET /api/products/{productId} kind=SPAN_KIND_SERVER spanId=yUMMOwSJU6M= parent=yIw9Thxj9y8=
+  [next.js] executing api route (pages) /api/cart kind=SPAN_KIND_INTERNAL spanId=RfoPV6qsbnc= parent=OpHxeNTGcI0=
+  [next.js] POST /api/cart kind=SPAN_KIND_SERVER spanId=OpHxeNTGcI0= parent=LgT3naiJ/OM=
+  [next.js] executing api route (pages) /api/product-ask-ai-assistant/[productId]/index kind=SPAN_KIND_INTERNAL spanId=xoUhJklXrZI= parent=E2aIeUb+BE8=
+  [next.js] POST /api/product-ask-ai-assistant/[productId]/index kind=SPAN_KIND_SERVER spanId=E2aIeUb+BE8= parent=TUIO/lixtBo=
+  [next.js] executing api route (pages) /api/checkout kind=SPAN_KIND_INTERNAL spanId=qHjpXPxWCF4= parent=fRqMvXt4zHo=
+  [next.js] POST /api/checkout kind=SPAN_KIND_SERVER spanId=fRqMvXt4zHo= parent=GJG3njsn86o=
+  [next.js] executing api route (pages) /api/product-reviews/[productId]/index kind=SPAN_KIND_INTERNAL spanId=ZQEqGjDzyA8= parent=OmVXPlIBhAw=
+  [next.js] GET /api/product-reviews/[productId]/index kind=SPAN_KIND_SERVER spanId=OmVXPlIBhAw= parent=y2CEGG4CzwU=
+  [@opentelemetry/instrumentation-http] GET kind=SPAN_KIND_SERVER spanId=WD0Fwt/wtyQ= parent=MkUqbGTFz6Y=
+  [@opentelemetry/instrumentation-http] GET kind=SPAN_KIND_SERVER spanId=+IFbxUOmuO4= parent=NJVnXoM7OgA=
+  [@opentelemetry/instrumentation-http] POST kind=SPAN_KIND_SERVER spanId=2jpgAWvFAEA= parent=sSHgJvHC4fw=
+  [@opentelemetry/instrumentation-http] GET kind=SPAN_KIND_SERVER spanId=ZgQ/1RXm8ak= parent=bOHQWUUYQ/o=
+  [@opentelemetry/instrumentation-http] GET kind=SPAN_KIND_SERVER spanId=yIw9Thxj9y8= parent=V+HcnZFDfrQ=
+  [@opentelemetry/instrumentation-http] POST kind=SPAN_KIND_SERVER spanId=LgT3naiJ/OM= parent=HSiRSEwJHn0=
+  [@opentelemetry/instrumentation-http] POST kind=SPAN_KIND_SERVER spanId=TUIO/lixtBo= parent=/Z/fhIhlGiE=
+  [@opentelemetry/instrumentation-http] POST kind=SPAN_KIND_SERVER spanId=GJG3njsn86o= parent=hTJrKgRFdtM=
+  [@opentelemetry/instrumentation-http] GET kind=SPAN_KIND_SERVER spanId=y2CEGG4CzwU= parent=rasj8mNWHW8=
+RESOURCE: service.name=load-generator service.instance.id=default.load-generator-d8b6686fb-2n5k6.load-generator k8s.pod.name=load-generator-d8b6686fb-2n5k6
+  [opentelemetry.instrumentation.requests] GET kind=SPAN_KIND_CLIENT spanId=lHTlockER0Q= parent=5LxzrNbL5nM=
+  [opentelemetry.instrumentation.requests] POST kind=SPAN_KIND_CLIENT spanId=hfZ31RDzibc= parent=5LxzrNbL5nM=
+  [opentelemetry.instrumentation.requests] GET kind=SPAN_KIND_CLIENT spanId=WI7DUDNZ9xk= parent=cuIsnA9lzmg=
+  [opentelemetry.instrumentation.requests] GET kind=SPAN_KIND_CLIENT spanId=EWo5Gg+bce4= parent=AIBo+TQEPmk=
+  [opentelemetry.instrumentation.requests] POST kind=SPAN_KIND_CLIENT spanId=iuOoT2cWTc0= parent=cuIsnA9lzmg=
+  [opentelemetry.instrumentation.requests] POST kind=SPAN_KIND_CLIENT spanId=yWSXU7bt/wg= parent=J7aIOFD3ug8=
+  [opentelemetry.instrumentation.requests] POST kind=SPAN_KIND_CLIENT spanId=UUyWROOxyUc= parent=iADCzeC3EFY=
+  [opentelemetry.instrumentation.requests] GET kind=SPAN_KIND_CLIENT spanId=dVJp5u9pkd4= parent=2AN36PdzI2Q=
+  [locustfile] user_add_to_cart kind=SPAN_KIND_INTERNAL spanId=5LxzrNbL5nM= parent=None
+  [locustfile] user_browse_product kind=SPAN_KIND_INTERNAL spanId=AIBo+TQEPmk= parent=None
+  [locustfile] user_add_to_cart kind=SPAN_KIND_INTERNAL spanId=cuIsnA9lzmg= parent=None
+  [locustfile] user_ask_product_ai_assistant kind=SPAN_KIND_INTERNAL spanId=J7aIOFD3ug8= parent=None
+  [locustfile] user_checkout_multi kind=SPAN_KIND_INTERNAL spanId=iADCzeC3EFY= parent=None
+  [locustfile] user_get_product_reviews kind=SPAN_KIND_INTERNAL spanId=2AN36PdzI2Q= parent=None

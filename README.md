@@ -80,3 +80,8 @@ Goal: polish + portfolio readiness
 - demo video / GIF
 - cleanup rough edges
 - deployment instructions
+
+# See also
+
+- [Grafana Tempo service graphs](https://github.com/grafana/tempo/tree/main/modules/generator/processor/servicegraphs)
+- [OpenTelemetry service graph connector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/servicegraphconnector)

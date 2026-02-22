@@ -28,14 +28,18 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
-  devServer: {
+    devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
     },
     compress: true,
     port: 3000,
-    proxy: {
-      '/graph': 'http://localhost:8000',
-    },
+    proxy: [
+      {
+        context: ['/graph', '/ws'],
+        target: 'http://localhost:8000',
+        ws: true,
+      },
+    ],
   },
 };
