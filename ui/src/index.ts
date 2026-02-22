@@ -72,9 +72,24 @@ function updateGraph(data: GraphData) {
         }
       ],
       layout: {
-        name: 'breadthfirst',
-        directed: true,
-        padding: 10
+        name: 'cose',
+        animate: true,
+        animationDuration: 1000,
+        randomize: false,
+        refresh: 20,
+        fit: true,
+        padding: 30,
+        boundingBox: undefined,
+        nodeDimensionsIncludeLabels: true,
+        nodeRepulsion: (node: any) => 4000,
+        idealEdgeLength: (edge: any) => 50,
+        edgeElasticity: (edge: any) => 100,
+        nestingFactor: 1.2,
+        gravity: 1,
+        numIter: 1000,
+        initialTemp: 200,
+        coolingFactor: 0.95,
+        minTemp: 1.0
       }
     });
 
@@ -191,7 +206,16 @@ function updateGraph(data: GraphData) {
 
   // Re-run layout if it's the first time or if nodes changed significantly
   if (existingIds.length === 0 || (newIds.length > 0 && existingIds.length !== newIds.length)) {
-      cy.layout({ name: 'breadthfirst', directed: true, padding: 10 }).run();
+      cy.layout({
+        name: 'cose',
+        animate: true,
+        animationDuration: 1000,
+        randomize: false,
+        fit: true,
+        padding: 30,
+        nodeRepulsion: (node: any) => 4000,
+        idealEdgeLength: (edge: any) => 50
+      }).run();
   }
 }
 
