@@ -27,7 +27,27 @@ body {
 }
 #cy {
   flex: 1;
+  min-width: 0;
   display: block;
+  height: 100%;
+
+  /* Cytoscape style variables */
+  --cy-node-size: 60px;
+  --cy-node-text-color: #fff;
+  --cy-node-outline-width: 2px;
+  --cy-node-outline-color: #888;
+
+  --cy-edge-width: 3px;
+  --cy-edge-font-size: 10px;
+  --cy-edge-text-margin-y: -10px;
+
+  --cy-selected-border-width: 3px;
+  --cy-selected-border-color: #333;
+
+  --health-color-good: #52c41a;
+  --health-color-warning: #faad14;
+  --health-color-error: #ff4d4f;
+  --health-color-unknown: #ccc;
 }
 #sidebar {
   width: 300px;
@@ -35,7 +55,38 @@ body {
   border-left: 1px solid #ddd;
   padding: 20px;
   overflow-y: auto;
-  display: none;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+}
+#sidebar h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 10px;
+}
+.detail-item {
+  margin: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+.detail-label {
+  font-weight: bold;
+  color: #666;
+}
+.detail-value {
+  color: #333;
+}
+.detail-section {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.detail-section-title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 .controls {
   display: flex;
