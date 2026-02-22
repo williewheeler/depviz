@@ -1,17 +1,19 @@
-# Depviz
+![DepViz screenshot](./depviz.png)
+
+# DepViz
 
 Real-time dynamic service dependency graph visualization from OpenTelemetry traces.
 
-Depviz consists of two main components:
+DepViz consists of two main components:
 - **Server**: A Python-based OTLP gRPC receiver that processes incoming traces, aggregates service dependencies, and provides a REST/WebSocket API.
 - **UI**: A web interface built with TypeScript and Cytoscape.js that visualizes the service topology in real-time.
 
 ### Relationship to OpenTelemetry Demo
-Depviz is designed to work alongside the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo). It consumes traces produced by the demo services to build a live map of the architecture, providing immediate visibility into service relationships, latency, and error rates.
+DepViz is designed to work alongside the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo). It consumes traces produced by the demo services to build a live map of the architecture, providing immediate visibility into service relationships, latency, and error rates.
 
 ## Deployment to Kubernetes
 
-To deploy Depviz alongside the OpenTelemetry Demo in a Kubernetes cluster (e.g., using `kind` or `minikube`), follow these steps:
+To deploy DepViz alongside the OpenTelemetry Demo in a Kubernetes cluster (e.g., using `kind` or `minikube`), follow these steps:
 
 ### 1. Build and Load Images
 First, build the Docker images for both the server and the UI, then load them into your local cluster.
@@ -28,7 +30,7 @@ docker build -t depviz-ui:dev .
 kind load docker-image depviz-ui:dev      # Or 'minikube image load'
 ```
 
-### 2. Deploy Depviz Components
+### 2. Deploy DepViz Components
 Apply the Kubernetes manifests for the server and the UI.
 
 ```bash
@@ -38,7 +40,7 @@ kubectl apply -f ui/k8s/depviz-ui.yaml
 ```
 
 ### 3. Configure OpenTelemetry Collector
-To feed traces into Depviz, you need to update the OpenTelemetry Collector configuration in your cluster.
+To feed traces into DepViz, you need to update the OpenTelemetry Collector configuration in your cluster.
 
 1.  Locate the ConfigMap for your OTel Collector agent (e.g., `otel-collector-agent`).
 2.  Add a new OTLP exporter pointing to `depviz-server:4317`.
