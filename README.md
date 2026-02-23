@@ -1,5 +1,7 @@
 # DepViz
 
+> See [A research lab for automating incident triage](https://williewheeler.com/posts/reseach-lab-for-automating-incident-triage/) for a blog post introducing DepViz.
+
 Real-time dynamic service dependency graph visualization from OpenTelemetry traces.
 
 <img src="./depviz.png" width="640" alt="DepViz screenshot" />
@@ -91,7 +93,7 @@ Consumes OTLP trace data via gRPC directly from the OpenTelemetry Collector, dem
 ### 7. Exportable visualization
 Supports exporting the dependency graph as an image for sharing, documentation, or incident reports.
 
-# See also
+## See also
 
 - [Grafana Tempo service graphs](https://github.com/grafana/tempo/tree/main/modules/generator/processor/servicegraphs)
 - [OpenTelemetry service graph connector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/servicegraphconnector)
