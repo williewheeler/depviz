@@ -1,6 +1,6 @@
 # DepViz
 
-> See [A research lab for automating incident triage](https://williewheeler.com/posts/reseach-lab-for-automating-incident-triage/) for a blog post introducing DepViz.
+> See [A research lab for automating incident triage](https://williewheeler.com/posts/research-lab-for-automating-incident-triage/) for a blog post introducing DepViz.
 
 Real-time dynamic service dependency graph visualization from OpenTelemetry traces.
 
