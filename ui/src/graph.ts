@@ -1,6 +1,9 @@
-import cytoscape from 'cytoscape';
+import cytoscape from 'https://esm.sh/cytoscape@3.33.1';
+import dagre from 'https://esm.sh/cytoscape-dagre@2.5.0';
 import { GraphData } from './model';
 import { showDetails, hideDetails } from './details';
+
+cytoscape.use(dagre);
 
 let cy: cytoscape.Core | null = null;
 
@@ -57,6 +60,7 @@ export function updateGraph(data: GraphData) {
             'target-arrow-shape': 'triangle',
             'curve-style': 'bezier',
             'label': 'data(label)',
+            'color': getCyStyle('--cy-edge-text-color') || '#fff',
             'font-size': getCyStyle('--cy-edge-font-size') || '10px',
             'text-rotation': 'autorotate',
             'text-margin-y': getCyStyleNum('--cy-edge-text-margin-y') || -10
@@ -71,24 +75,16 @@ export function updateGraph(data: GraphData) {
         }
       ],
       layout: {
-        name: 'cose',
+        name: 'dagre',
+        rankDir: 'TB',
+        nodeSep: 50,
+        edgeSep: 10,
+        rankSep: 50,
         animate: true,
         animationDuration: 1000,
-        randomize: false,
-        refresh: 20,
         fit: true,
         padding: 30,
-        boundingBox: undefined,
         nodeDimensionsIncludeLabels: true,
-        nodeRepulsion: (node: any) => getCyStyleNum('--cy-layout-node-repulsion') || 4000,
-        idealEdgeLength: (edge: any) => getCyStyleNum('--cy-layout-ideal-edge-length') || 50,
-        edgeElasticity: (edge: any) => getCyStyleNum('--cy-layout-edge-elasticity') || 100,
-        nestingFactor: getCyStyleNum('--cy-layout-nesting-factor') || 1.2,
-        gravity: getCyStyleNum('--cy-layout-gravity') || 1,
-        numIter: getCyStyleNum('--cy-layout-num-iter') || 1000,
-        initialTemp: getCyStyleNum('--cy-layout-initial-temp') || 200,
-        coolingFactor: getCyStyleNum('--cy-layout-cooling-factor') || 0.95,
-        minTemp: getCyStyleNum('--cy-layout-min-temp') || 1.0
       }
     });
 
@@ -195,14 +191,16 @@ export function updateGraph(data: GraphData) {
   // Re-run layout if it's the first time or if nodes changed significantly
   if (existingIds.length === 0 || (newIds.length > 0 && existingIds.length !== newIds.length)) {
       cy.layout({
-        name: 'cose',
+        name: 'dagre',
+        rankDir: 'TB',
+        nodeSep: 50,
+        edgeSep: 10,
+        rankSep: 50,
         animate: true,
         animationDuration: 1000,
-        randomize: false,
         fit: true,
         padding: 30,
-        nodeRepulsion: (node: any) => getCyStyleNum('--cy-layout-node-repulsion') || 4000,
-        idealEdgeLength: (edge: any) => getCyStyleNum('--cy-layout-ideal-edge-length') || 50
+        nodeDimensionsIncludeLabels: true,
       }).run();
   }
 }

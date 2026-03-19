@@ -73,6 +73,7 @@ body {
   --cy-node-outline-color: #888;
 
   --cy-edge-width: 3px;
+  --cy-edge-text-color: #ccc;
   --cy-edge-font-size: 10px;
   --cy-edge-text-margin-y: -10px;
 
