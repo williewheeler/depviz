@@ -18,8 +18,8 @@ app.add_middleware(
 )
 
 @app.get("/graph")
-def get_graph(window_sec: Optional[int] = 60):
-    snapshot = global_aggregator.get_snapshot(window_sec=window_sec or 60)
+def get_graph(window_sec: Optional[int] = 60, dynamic: bool = False):
+    snapshot = global_aggregator.get_snapshot(window_sec=window_sec or 60, dynamic=dynamic)
     return JSONResponse(content=snapshot)
 
 
@@ -27,9 +27,10 @@ def get_graph(window_sec: Optional[int] = 60):
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     window_sec = 60
-    
+    dynamic = False
+
     async def receive_loop():
-        nonlocal window_sec
+        nonlocal window_sec, dynamic
         try:
             while True:
                 data = await websocket.receive_text()
@@ -39,6 +40,9 @@ async def websocket_endpoint(websocket: WebSocket):
                         print(f"WebSocket window updated to {window_sec}s")
                     except ValueError:
                         pass
+                elif data.startswith("dynamic:"):
+                    dynamic = data.split(":")[1].lower() == "true"
+                    print(f"WebSocket dynamic mode changed to: {dynamic}")
         except Exception as e:
             print(f"WebSocket receive error: {e}")
 
@@ -46,7 +50,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
-            snapshot = global_aggregator.get_snapshot(window_sec=window_sec)
+            snapshot = global_aggregator.get_snapshot(window_sec=window_sec, dynamic=dynamic)
             await websocket.send_json(snapshot)
             await asyncio.sleep(2)  # Update every 2 seconds
     except WebSocketDisconnect:

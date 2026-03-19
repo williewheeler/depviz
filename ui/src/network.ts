@@ -4,6 +4,7 @@ let ws: WebSocket | null = null;
 
 export function connectWebSocket(
   currentWindowSec: number,
+  isDynamic: boolean,
   onData: (data: GraphData) => void,
   onStatusUpdate: (status: 'connected' | 'disconnected') => void
 ) {
@@ -16,6 +17,7 @@ export function connectWebSocket(
   ws.onopen = () => {
     onStatusUpdate('connected');
     ws?.send(`window:${currentWindowSec}`);
+    ws?.send(`dynamic:${isDynamic}`);
   };
 
   ws.onmessage = (event) => {
@@ -30,7 +32,7 @@ export function connectWebSocket(
 
   ws.onclose = () => {
     onStatusUpdate('disconnected');
-    setTimeout(() => connectWebSocket(currentWindowSec, onData, onStatusUpdate), 3000);
+    setTimeout(() => connectWebSocket(currentWindowSec, isDynamic, onData, onStatusUpdate), 3000);
   };
 
   ws.onerror = (error) => {
@@ -45,12 +47,19 @@ export function sendWindowUpdate(currentWindowSec: number) {
   }
 }
 
+export function sendDynamicUpdate(isDynamic: boolean) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(`dynamic:${isDynamic}`);
+  }
+}
+
 export async function manualFetch(
   currentWindowSec: number,
+  isDynamic: boolean,
   onData: (data: GraphData) => void
 ) {
   try {
-    const response = await fetch(`/graph?window_sec=${currentWindowSec}`);
+    const response = await fetch(`/graph?window_sec=${currentWindowSec}&dynamic=${isDynamic}`);
     const data: GraphData = await response.json();
     onData(data);
   } catch (err) {

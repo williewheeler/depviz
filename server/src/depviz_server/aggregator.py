@@ -1,20 +1,23 @@
 import bisect
+import json
+import os
 import threading
 import time
 from collections import defaultdict
-from typing import List, Dict
+from typing import List, Dict, Any, Optional
 
 from depviz_server.model import SpanEvent, EdgeKey, EdgeStats, NodeStats
 
 
 class GraphAggregator:
-    def __init__(self, window_sec: int = 10, retention_buckets: int = 60):
+    def __init__(self, window_sec: int = 10, retention_buckets: int = 60, static_graph_path: Optional[str] = None):
         """
         Initializes a GraphAggregator with specified window and retention settings.
 
         Parameters:
         - window_sec: The time window in seconds for aggregating edge statistics.
         - retention_buckets: The number of buckets to retain for historical data.
+        - static_graph_path: Path to a JSON file containing a static graph.
         """
 
         self.window_ns = window_sec * 1_000_000_000
@@ -25,6 +28,70 @@ class GraphAggregator:
         # bucket_id -> service_name -> NodeStats
         self.node_buckets: Dict[int, Dict[str, NodeStats]] = defaultdict(lambda: defaultdict(NodeStats))
         self.active_buckets: List[int] = []
+
+        # Determine the static graph path more robustly
+        if static_graph_path:
+            self.static_graph_path = static_graph_path
+        else:
+            self.static_graph_path = os.environ.get("STATIC_GRAPH_PATH")
+            if not self.static_graph_path:
+                # Try relative to the package first
+                # Current file: server/src/depviz_server/aggregator.py
+                # Data file: server/data/otel-demo.json
+                base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                self.static_graph_path = os.path.join(base_dir, "data", "otel-demo.json")
+
+        # Fallback to absolute /server/data/... if not found
+        if not os.path.exists(self.static_graph_path):
+             alt_path = "/server/data/otel-demo.json"
+             if os.path.exists(alt_path):
+                 self.static_graph_path = alt_path
+
+        print(f"GraphAggregator: static graph path set to {self.static_graph_path} (exists: {os.path.exists(self.static_graph_path)})")
+
+    def _load_static_graph(self) -> Dict[str, Any]:
+        """
+        Loads the static graph from a JSON file and transforms it to the expected output format.
+        """
+        if not self.static_graph_path or not os.path.exists(self.static_graph_path):
+            print(f"Static graph file not found at {self.static_graph_path}")
+            return {"nodes": [], "edges": []}
+
+        try:
+            with open(self.static_graph_path, "r") as f:
+                data = json.load(f)
+
+            # Format:
+            # { "nodes": [{"id": "svc"}], "edges": [{"source": "p", "target": "c"}] }
+            # Transform to:
+            # { "nodes": [{"name": "svc", "call_count": 0, "error_count": 0}],
+            #   "edges": [{"src": "p", "dst": "c", "call_count": 0, "p95_ms": 0.0, "error_count": 0}] }
+
+            nodes = []
+            for n in data.get("nodes", []):
+                nodes.append({
+                    "name": n.get("id", "unknown"),
+                    "call_count": 0,
+                    "error_count": 0
+                })
+
+            edges = []
+            for e in data.get("edges", []):
+                edges.append({
+                    "src": e.get("source", "unknown"),
+                    "dst": e.get("target", "unknown"),
+                    "call_count": 0,
+                    "p95_ms": 0.0,
+                    "error_count": 0
+                })
+
+            return {
+                "nodes": sorted(nodes, key=lambda x: x["name"]),
+                "edges": edges
+            }
+        except Exception as e:
+            print(f"Error loading static graph: {e}")
+            return {"nodes": [], "edges": []}
 
     def ingest(self, spans: List[SpanEvent]):
         """
@@ -41,13 +108,13 @@ class GraphAggregator:
         with self.lock:
             for s in spans:
                 bucket_id = s.end_time_ns // self.window_ns
-                
+
                 # Update node stats
                 node_stats = self.node_buckets[bucket_id][s.service_name]
                 node_stats.call_count += 1
                 if s.is_error:
                     node_stats.error_count += 1
-                
+
                 # SPAN_KIND_SERVER = 2, SPAN_KIND_CONSUMER = 5
                 if s.kind in (2, 5):
                     node_stats.server_call_count += 1
@@ -85,16 +152,19 @@ class GraphAggregator:
                 if b_id in self.node_buckets:
                     del self.node_buckets[b_id]
 
-    def get_snapshot(self, window_sec: int = 60):
+    def get_snapshot(self, window_sec: int = 60, dynamic: bool = False):
         """
         Retrieves a snapshot of aggregated edge statistics within a specified window.
 
         Parameters:
         - window_sec: The time window in seconds for which to retrieve the snapshot.
+        - dynamic: If True, return the inferred graph. Otherwise, return the static graph.
 
         Returns:
         - A dictionary mapping EdgeKey to EdgeStats representing the aggregated statistics.
         """
+
+        print(f"GraphAggregator.get_snapshot: dynamic={dynamic}, window_sec={window_sec}")
 
         now_ns = time.time_ns()
         start_ns = now_ns - (window_sec * 1_000_000_000)
@@ -111,7 +181,7 @@ class GraphAggregator:
                         combined.call_count += stats.call_count
                         combined.durations.extend(stats.durations)
                         combined.error_count += stats.error_count
-                    
+
                     for svc_name, stats in self.node_buckets[b_id].items():
                         combined = nodes_combined[svc_name]
                         combined.call_count += stats.call_count
@@ -119,12 +189,46 @@ class GraphAggregator:
                         combined.server_call_count += stats.server_call_count
                         combined.server_error_count += stats.server_error_count
 
+        if not dynamic:
+            static_graph = self._load_static_graph()
+            static_nodes = {n["name"]: n for n in static_graph["nodes"]}
+            static_edges = {(e["src"], e["dst"]): e for e in static_graph["edges"]}
+
+            # Update static nodes with dynamic metrics
+            for svc_name, stats in nodes_combined.items():
+                if svc_name in static_nodes:
+                    node = static_nodes[svc_name]
+                    # Logic: Use SERVER/CONSUMER spans if they exist, otherwise use all spans
+                    if stats.server_call_count > 0:
+                        node["call_count"] = stats.server_call_count
+                        node["error_count"] = stats.server_error_count
+                    else:
+                        node["call_count"] = stats.call_count
+                        node["error_count"] = stats.error_count
+
+            # Update static edges with dynamic metrics
+            for edge_key, stats in edges_combined.items():
+                key = (edge_key.parent_service, edge_key.child_service)
+                if key in static_edges:
+                    edge = static_edges[key]
+                    edge["call_count"] = stats.call_count
+                    edge["error_count"] = stats.error_count
+
+                    p95 = 0.0
+                    if stats.durations:
+                        sorted_durations = sorted(stats.durations)
+                        idx = int(len(sorted_durations) * 0.95)
+                        p95 = sorted_durations[min(idx, len(sorted_durations) - 1)]
+                    edge["p95_ms"] = round(p95, 2)
+
+            return static_graph
+
         # Format for REST API
         result_nodes = []
         for svc_name, stats in nodes_combined.items():
             if not svc_name or not isinstance(svc_name, str):
                 continue
-            
+
             # Logic: Use SERVER/CONSUMER spans if they exist, otherwise use all spans
             if stats.server_call_count > 0:
                 call_count = stats.server_call_count
@@ -132,7 +236,7 @@ class GraphAggregator:
             else:
                 call_count = stats.call_count
                 error_count = stats.error_count
-            
+
             result_nodes.append({
                 "name": svc_name,
                 "call_count": call_count,
@@ -145,7 +249,7 @@ class GraphAggregator:
                 continue
             if not isinstance(edge_key.parent_service, str) or not isinstance(edge_key.child_service, str):
                 continue
-            
+
             p95 = 0.0
             if stats.durations:
                 # Basic p95 calculation

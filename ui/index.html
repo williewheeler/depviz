@@ -9,13 +9,17 @@
       <h1>DepViz</h1>
       <div class="controls">
         <span id="ws-status" class="status">Connecting...</span>
-        <select id="window-selector">
+        <select id="mode-selector" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 5px; border-radius: 4px;">
+          <option value="static">Static Graph</option>
+          <option value="dynamic">Inferred Graph</option>
+        </select>
+        <select id="window-selector" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 5px; border-radius: 4px;">
           <option value="60">Last 1 minute</option>
           <option value="300">Last 5 minutes</option>
           <option value="900">Last 15 minutes</option>
           <option value="3600">Last 1 hour</option>
         </select>
-        <button id="refresh-btn">Force Refresh</button>
+        <button id="refresh-btn" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; cursor: pointer;">Force Refresh</button>
       </div>
     </div>
     <div id="main-container">

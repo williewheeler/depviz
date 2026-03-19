@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "directed": false,
+  "nodes": [
+    {
+      "id": "accounting"
+    },
+    {
+      "id": "ad"
+    },
+    {
+      "id": "cart"
+    },
+    {
+      "id": "checkout"
+    },
+    {
+      "id": "currency"
+    },
+    {
+      "id": "email"
+    },
+    {
+      "id": "flagd"
+    },
+    {
+      "id": "fraud-detection"
+    },
+    {
+      "id": "frontend"
+    },
+    {
+      "id": "frontend-proxy"
+    },
+    {
+      "id": "image-provider"
+    },
+    {
+      "id": "kafka"
+    },
+    {
+      "id": "llm"
+    },
+    {
+      "id": "payment"
+    },
+    {
+      "id": "postgresql"
+    },
+    {
+      "id": "product-catalog"
+    },
+    {
+      "id": "product-reviews"
+    },
+    {
+      "id": "quote"
+    },
+    {
+      "id": "react-native-app"
+    },
+    {
+      "id": "recommendation"
+    },
+    {
+      "id": "shipping"
+    },
+    {
+      "id": "valkey-cart"
+    }
+  ],
+  "edges": [
+    {
+      "source": "react-native-app",
+      "target": "frontend-proxy"
+    },
+    {
+      "source": "frontend-proxy",
+      "target": "flagd"
+    },
+    {
+      "source": "frontend-proxy",
+      "target": "frontend"
+    },
+    {
+      "source": "image-provider",
+      "target": "frontend-proxy"
+    },
+    {
+      "source": "frontend",
+      "target": "ad"
+    },
+    {
+      "source": "frontend",
+      "target": "currency"
+    },
+    {
+      "source": "frontend",
+      "target": "cart"
+    },
+    {
+      "source": "frontend",
+      "target": "checkout"
+    },
+    {
+      "source": "frontend",
+      "target": "shipping"
+    },
+    {
+      "source": "frontend",
+      "target": "recommendation"
+    },
+    {
+      "source": "frontend",
+      "target": "product-catalog"
+    },
+    {
+      "source": "frontend",
+      "target": "product-reviews"
+    },
+    {
+      "source": "ad",
+      "target": "flagd"
+    },
+    {
+      "source": "checkout",
+      "target": "currency"
+    },
+    {
+      "source": "checkout",
+      "target": "cart"
+    },
+    {
+      "source": "checkout",
+      "target": "kafka"
+    },
+    {
+      "source": "checkout",
+      "target": "payment"
+    },
+    {
+      "source": "checkout",
+      "target": "email"
+    },
+    {
+      "source": "checkout",
+      "target": "product-catalog"
+    },
+    {
+      "source": "checkout",
+      "target": "shipping"
+    },
+    {
+      "source": "product-reviews",
+      "target": "flagd"
+    },
+    {
+      "source": "product-reviews",
+      "target": "product-catalog"
+    },
+    {
+      "source": "product-reviews",
+      "target": "llm"
+    },
+    {
+      "source": "product-reviews",
+      "target": "postgresql"
+    },
+    {
+      "source": "cart",
+      "target": "valkey-cart"
+    },
+    {
+      "source": "cart",
+      "target": "flagd"
+    },
+    {
+      "source": "quote",
+      "target": "shipping"
+    },
+    {
+      "source": "accounting",
+      "target": "kafka"
+    },
+    {
+      "source": "accounting",
+      "target": "postgresql"
+    },
+    {
+      "source": "fraud-detection",
+      "target": "kafka"
+    },
+    {
+      "source": "fraud-detection",
+      "target": "flagd"
+    },
+    {
+      "source": "payment",
+      "target": "flagd"
+    },
+    {
+      "source": "recommendation",
+      "target": "flagd"
+    },
+    {
+      "source": "recommendation",
+      "target": "product-catalog"
+    }
+  ]
+}
