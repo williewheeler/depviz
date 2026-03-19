@@ -108,20 +108,9 @@ export function updateGraph(data: GraphData) {
 
   // Prepare nodes
   data.nodes.forEach(node => {
-    // Robustly handle if node is a string (old API) or an object (new API)
-    let nodeId: string;
-    let totalCalls: number;
-    let totalErrors: number;
-
-    if (typeof node === 'string') {
-      nodeId = node;
-      totalCalls = 0; // Unknown if old API
-      totalErrors = 0;
-    } else {
-      nodeId = String(node.name || 'unknown');
-      totalCalls = Number(node.call_count || 0);
-      totalErrors = Number(node.error_count || 0);
-    }
+    let nodeId: string = String(node.name || 'unknown');
+    let totalCalls: number = Number(node.call_count || 0);
+    let totalErrors: number = Number(node.error_count || 0);
 
     elements.push({
       data: {

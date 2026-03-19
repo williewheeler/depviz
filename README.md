@@ -11,7 +11,10 @@ DepViz consists of two main components:
 - **UI**: A web interface built with TypeScript and Cytoscape.js that visualizes the service topology in real-time.
 
 ### Relationship to OpenTelemetry Demo
-DepViz is designed to work alongside the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo). It consumes traces produced by the demo services to build a live map of the architecture, providing immediate visibility into service relationships, latency, and error rates.
+
+DepViz is designed to work alongside the [OpenTelemetry Demo](https://github.com/open-telemetry/opentelemetry-demo). Follow the [OTel Demo instructions](https://opentelemetry.io/docs/demo/kubernetes-deployment/) for information on deploying and undeploying the demo to your k8s cluster.
+
+DepViz consumes traces produced by the demo services to build a live map of the architecture, providing immediate visibility into service relationships, latency, and error rates.
 
 ## Deployment to Kubernetes
 
@@ -24,12 +27,12 @@ First, build the Docker images for both the server and the UI, then load them in
 # Build Server
 cd server
 docker build -t depviz-server:dev .
-kind load docker-image depviz-server:dev  # Or 'minikube image load'
+kind load docker-image depviz-server:dev  # Or 'minikube image load depviz-server:dev'
 
 # Build UI
 cd ../ui
 docker build -t depviz-ui:dev .
-kind load docker-image depviz-ui:dev      # Or 'minikube image load'
+kind load docker-image depviz-ui:dev      # Or 'minikube image load depviz-ui:dev'
 ```
 
 ### 2. Deploy DepViz Components
@@ -62,13 +65,43 @@ service:
       exporters: [otlp/jaeger, otlp/depviz, debug]
 ```
 
-### 4. Access the UI
+### 4. Restart the OTel Collector
+Restart the OTel Collector to apply the new configuration:
+
+```bash
+kubectl rollout restart deployment/otel-collector-agent
+```
+
+### 5. Access the UI
 Port-forward to the UI service to view the dashboard:
 
 ```bash
 kubectl port-forward deploy/depviz-ui 8001:8001
 ```
 Open your browser and navigate to `http://localhost:8001`.
+
+## Local development
+
+For local development, it's more convenient to run the server and UI components on the host instead of running them in
+the k8s cluster. To start the server:
+
+```bash
+cd server
+poetry shell
+python3 src/depviz_server/main.py
+```
+
+To start the UI:
+
+```bash
+cd ui
+npm install
+npm run build
+npm run dev
+```
+
+In the OTel Collector config map, use host.docker.internal:4317 for the OTLP exporter endpoint. Then restart the OTel
+Collector as described in the previous section.
 
 ## Features
 
